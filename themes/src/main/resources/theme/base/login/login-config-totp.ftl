@@ -14,7 +14,13 @@
                     </#list>
                 </ul>
             </li>
-
+            <li>
+                <#if totp.policy.type = "totp">
+                    <li>
+                        <p>Or <a href="apple-otpauth://${totp.policy.type}/${realm.name}:${account.username}?secret=${totp.totpSecretEncoded}&digits=${totp.policy.digits}&period=${totp.policy.period}&algorithm=${totp.policy.getAlgorithmKey()}&issuer=${realm.name}">set up</a> with iCloud Keychain</p>
+                    </li>
+                </#if>
+            </li>
             <#if mode?? && mode = "manual">
                 <li>
                     <p>${msg("loginTotpManualStep2")}</p>
@@ -55,7 +61,7 @@
                     <label for="totp" class="control-label">${msg("authenticatorCode")}</label> <span class="required">*</span>
                 </div>
                 <div class="${properties.kcInputWrapperClass!}">
-                    <input type="text" id="totp" name="totp" autocomplete="off" class="${properties.kcInputClass!}"
+                    <input type="text" id="totp" name="totp" autocomplete="one-time-code" class="${properties.kcInputClass!}"
                            aria-invalid="<#if messagesPerField.existsError('totp')>true</#if>"
                     />
 
